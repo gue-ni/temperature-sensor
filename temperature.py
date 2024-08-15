@@ -2,16 +2,20 @@
 import time
 import board
 import adafruit_dht
+import datetime
 
 # Sensor data pin is connected to GPIO 4
 sensor = adafruit_dht.DHT22(board.D4)
+
+frequency = 5
 
 def read_values():
         try: 
             temperature = sensor.temperature
             humidity = sensor.humidity
+            now = datetime.datetime.now().isoformat()
 
-            output = f"Temp={temperature}°C, Humidity={humidity}%\n"
+            output = f"{now}, {temperature}°C, {humidity}%\n"
 
             with open("/home/pi/temperature-sensor/log/temperature.log", "a") as log:
                 log.write(output)
@@ -28,7 +32,7 @@ def read_values():
 def read_in_loop():
     while True:
         read_values()
-        time.sleep(3.0);
+        time.sleep(frequency);
 
 
 
