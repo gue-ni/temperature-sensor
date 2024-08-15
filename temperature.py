@@ -16,7 +16,7 @@ def read_values():
             now = datetime.datetime.now().isoformat()
             today = datetime.datetime.now().strftime('%Y-%m-%d')
 
-            output = f"{now}, {temperature}°C, {humidity}%\n"
+            output = f"{now}, Temperature={temperature} Celsius, Humidity={humidity}%\n"
 
             with open(f"/home/pi/temperature-sensor/log/temperature.{today}.log", "a") as log:
                 log.write(output)
