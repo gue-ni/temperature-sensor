@@ -14,10 +14,11 @@ def read_values():
             temperature = sensor.temperature
             humidity = sensor.humidity
             now = datetime.datetime.now().isoformat()
+            today = datetime.datetime.now().strftime('%Y-%m-%d')
 
             output = f"{now}, {temperature}°C, {humidity}%\n"
 
-            with open("/home/pi/temperature-sensor/log/temperature.log", "a") as log:
+            with open(f"/home/pi/temperature-sensor/log/temperature.{today}.log", "a") as log:
                 log.write(output)
 
         except RuntimeError as error:
