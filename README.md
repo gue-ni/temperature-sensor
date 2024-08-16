@@ -1,5 +1,7 @@
 # DHT22 Temperature Sensor
 
+If pin 4 does not work, maybe try pin 2.
+
 ```
 python -m venv venv
 source venv/bin/activate
