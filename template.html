@@ -5,17 +5,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Temperature and Humidity</title>
+    <style>
+    :root {
+      --font-color-default: #262626;
+      --border-color-default: #D0D7DE;
+      --background-color: #F8FAFC;
+      --code-background-color: #F6F8FA;
+      --code-background-color-2: rgba(0, 0, 0, 0.08);
+      --monospace-font: 'Roboto Mono', monospace;
+      --serif-font: Georgia, serif;
+      --sans-serif-font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+    body {
+      max-width: 800px;
+      margin: 0 auto;
+      color: var(--font-color-default);
+      padding: 1rem;
+      font-weight: 400;
+      font-family: var(--monospace-font);
+      background-color: var(--background-color);
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table,
+    td,
+    th {
+      padding: .5rem;
+      border: 1px solid var(--border-color-default);
+    }
+
+    img {
+      max-width: 100%;
+    }
+  </style>
 </head>
 
 <body>
   <div>
     <h1>Temperature and Humidity</h1>
-
-    <div>
-      <span>Temperature: __TEMPERATURE__</span>
-      <span>Humidity: __HUMIDITY__</span>
-      <span>(Last update at __TIMESTAMP__)</span>
-    </div>
+    <p>
+      
+    </p>
+    <p>
+      Temperature: <b>__TEMPERATURE__</b>
+    </p>
+    <p>
+      Humidity: <b>__HUMIDITY__</b>
+    </p>
+    <p>
+      Last update at <b>__TIMESTAMP__</b> 
+    </p>
     <div>
       <img src="./__IMAGE__" alt="">
     </div>
