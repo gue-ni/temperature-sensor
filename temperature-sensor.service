@@ -3,10 +3,11 @@ Description=Temperature and Humidity Sensor
 After=multi-user.target
 
 [Service]
+User=pi
 Type=simple
 Restart=always
+WorkingDirectory=/home/pi/temperature-sensor
 ExecStart=/home/pi/temperature-sensor/venv/bin/python /home/pi/temperature-sensor/temperature.py
-#ExecStart=python /home/pi/temperature-sensor/test.py
 
 [Install]
 WantedBy=multi-user.target
