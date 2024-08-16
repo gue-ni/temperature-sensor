@@ -25,6 +25,7 @@ humidity=${array[2]}
 
 image_name=plot.png
 
+rm -rf $workspace/www
 mkdir -p $workspace/www
 cp $workspace/template.html $workspace/www/index.html
 
@@ -36,3 +37,4 @@ sed -i "s/__IMAGE__/${image_name}/g" $workspace/www/index.html
 python $workspace/analyze.py $log_file $workspace/www/$image_name
 
 scp -r $workspace/www/* $1
+#rsync --archive --verbose $workspace/www $1

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Temperature and Humidity</title>
-    <style>
+  <style>
     :root {
       --font-color-default: #262626;
       --border-color-default: #D0D7DE;
@@ -24,7 +24,7 @@
       padding: 1rem;
       font-weight: 400;
       font-family: var(--monospace-font);
-      background-color: var(--background-color);
+      /* background-color: var(--background-color); */
       line-height: 1.6;
     }
 
@@ -50,16 +50,10 @@
   <div>
     <h1>Temperature and Humidity</h1>
     <p>
-      
+
     </p>
     <p>
-      Temperature: <b>__TEMPERATURE__</b>
-    </p>
-    <p>
-      Humidity: <b>__HUMIDITY__</b>
-    </p>
-    <p>
-      Last update at <b>__TIMESTAMP__</b> 
+      Temperature: <b>__TEMPERATURE__°C</b>, Humidity: <b>__HUMIDITY__%</b>, last update at <b>__TIMESTAMP__</b>
     </p>
     <div>
       <img src="./__IMAGE__" alt="">
