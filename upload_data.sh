@@ -14,11 +14,6 @@ echo $data > $tmp_file
 
 IFS=',' read -r -a array <<< "$data"
 
-echo "First element: ${array[0]}"
-echo "First element: ${array[1]}"
-echo "First element: ${array[2]}"
-
-
 timestamp=${array[0]}
 temperature=${array[1]}
 humidity=${array[2]}
@@ -34,6 +29,9 @@ sed -i "s/__TEMPERATURE__/${temperature}/g"  $workspace/www/index.html
 sed -i "s/__HUMIDITY__/${humidity}/g"  $workspace/www/index.html
 sed -i "s/__IMAGE__/${image_name}/g" $workspace/www/index.html
 
-python $workspace/analyze.py $log_file $workspace/www/$image_name
+/home/pi/temperature-sensor/venv/bin/python $workspace/analyze.py $log_file $workspace/www/$image_name
 
-rsync --archive --verbose --delete $workspace/www/ root@jakobmaier.at:/var/www/files/temperature-sensor
+server=root@jakobmaier.at
+webroot=/var/www/files/temperature-sensor
+
+rsync --archive --verbose --delete $workspace/www/ $server:$webroot
