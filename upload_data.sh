@@ -36,5 +36,4 @@ sed -i "s/__IMAGE__/${image_name}/g" $workspace/www/index.html
 
 python $workspace/analyze.py $log_file $workspace/www/$image_name
 
-scp -r $workspace/www/* $1
-#rsync --archive --verbose $workspace/www $1
+rsync --archive --verbose --delete $workspace/www/ root@jakobmaier.at:/var/www/files/temperature-sensor
