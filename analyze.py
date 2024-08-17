@@ -2,8 +2,10 @@ import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def main(filename, figname):
-  data = pd.read_csv(filename,  parse_dates=['time'])
+def main(files, figname):
+
+  df_list = [pd.read_csv(file, parse_dates=['time']) for file in files]
+  data = pd.concat(df_list, ignore_index=True)
 
   plt.figure()
   plt.gcf().autofmt_xdate()
@@ -24,10 +26,10 @@ def main(filename, figname):
   plt.savefig(figname)
 
 if __name__ == "__main__":
-  if len(sys.argv) != 3:
+  if len(sys.argv) < 3:
     print(f"Usage: {sys.argv[0]} <log_file> <image_out>")
     exit(1)
 
-  filename = sys.argv[1]
-  outfile = sys.argv[2]
-  main(filename, outfile)
+  infiles = sys.argv[1:-1]
+  outfile = sys.argv[len(sys.argv) - 1]
+  main(infiles, outfile)
