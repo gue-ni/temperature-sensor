@@ -13,9 +13,10 @@ now=$(date)
 
 data=$(sqlite3 $database "select datetime(timestamp, 'localtime'), temperature, humidity from measurements order by timestamp desc limit 1")
 
-max_temperature=$(sqlite3 $database "select max(temperature) from measurements")
-min_temperature=$(sqlite3 $database "select min(temperature) from measurements")
-avg_temperature=$(sqlite3 $database "SELECT AVG(temperature) FROM measurements WHERE timestamp >= datetime('now', '-1 day')")
+max_temperature=$(sqlite3 $database 'select printf("Avg=%.2f°C, Min=%.2f°C, Max=%.2f°C", avg(temperature), min(temperature), max(temperature)) from measurements')
+min_temperature=$(sqlite3 $database 'select printf("Avg=%.2f%%, Min=%.2f%%, Max=%.2f%%", avg(humidity), min(humidity), max(humidity)) from measurements')
+
+avg_temperature=$(sqlite3 $database "SELECT printf(\"Avg=%.2f°C, Min=%.2f°C, Max=%.2f°C\", AVG(temperature), MIN(temperature), MAX(temperature)) FROM measurements WHERE timestamp >= datetime('now', '-1 day')")
 
 max_humidity=$(sqlite3 $database "select max(humidity) from measurements")
 min_humidity=$(sqlite3 $database "select min(humidity) from measurements")
