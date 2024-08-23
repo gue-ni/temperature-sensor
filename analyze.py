@@ -3,6 +3,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sqlite3
 
+def read_data(conn, query):
+  data = pd.read_sql_query(query, conn)
+  data['timestamp'] = pd.to_datetime(data['timestamp'])
+  data.set_index('timestamp', inplace=True)
+  return data
+
 def plot_data(data, figname):
   plt.figure()
   plt.gcf().autofmt_xdate()
@@ -24,16 +30,12 @@ def main(database, fig_1, fig_2):
   conn = sqlite3.connect(database)
 
   query = "SELECT timestamp, temperature, humidity FROM measurements WHERE timestamp >= datetime('now', '-1 day')"
-  data = pd.read_sql_query(query, conn)
-  data['timestamp'] = pd.to_datetime(data['timestamp'])
-  data.set_index('timestamp', inplace=True)
+  data = read_data(conn, query)
 
   plot_data(data, fig_1)
 
   query = "SELECT timestamp, temperature, humidity FROM measurements"
-  data = pd.read_sql_query(query, conn)
-  data['timestamp'] = pd.to_datetime(data['timestamp'])
-  data.set_index('timestamp', inplace=True)
+  data = read_data(conn, query)
 
   plot_data(data, fig_2)
 
