@@ -13,10 +13,11 @@ now=$(date)
 
 data=$(sqlite3 $database "select datetime(timestamp, 'localtime'), temperature, humidity from measurements order by timestamp desc limit 1")
 
-max_temperature=$(sqlite3 $database 'select printf("Avg=%.2f°C, Min=%.2f°C, Max=%.2f°C", avg(temperature), min(temperature), max(temperature)) from measurements')
-min_temperature=$(sqlite3 $database 'select printf("Avg=%.2f%%, Min=%.2f%%, Max=%.2f%%", avg(humidity), min(humidity), max(humidity)) from measurements')
+all_time_temp=$(sqlite3 $database 'select printf("Avg=%.2f°C, Min=%.2f°C, Max=%.2f°C", avg(temperature), min(temperature), max(temperature)) from measurements')
+all_time_humidity=$(sqlite3 $database 'select printf("Avg=%.2f%%, Min=%.2f%%, Max=%.2f%%", avg(humidity), min(humidity), max(humidity)) from measurements')
 
-avg_temperature=$(sqlite3 $database "SELECT printf(\"Avg=%.2f°C, Min=%.2f°C, Max=%.2f°C\", AVG(temperature), MIN(temperature), MAX(temperature)) FROM measurements WHERE timestamp >= datetime('now', '-1 day')")
+today_temp=$(sqlite3 $database "SELECT printf(\"Avg=%.2f°C, Min=%.2f°C, Max=%.2f°C\", AVG(temperature), MIN(temperature), MAX(temperature)) FROM measurements WHERE timestamp >= datetime('now', '-1 day')")
+today_humidity=$(sqlite3 $database "SELECT printf(\"Avg=%.2f%%, Min=%.2f%%, Max=%.2f%%\", AVG(humidity), MIN(humidity), MAX(humidity)) FROM measurements WHERE timestamp >= datetime('now', '-1 day')")
 
 
 IFS='|' read -r -a array <<< "$data"
@@ -38,9 +39,10 @@ sed -i "s/__TIMESTAMP__/${timestamp}/g"               $workspace/www/index.html
 sed -i "s/__TIMESTAMP__/${timestamp}/g"               $workspace/www/index.html
 sed -i "s/__TEMPERATURE__/${temperature}/g"           $workspace/www/index.html
 sed -i "s/__HUMIDITY__/${humidity}/g"                 $workspace/www/index.html
-sed -i "s/__All_TIME_TEMPERATURE__/${max_temperature}/g"   $workspace/www/index.html
-sed -i "s/__All_TIME_HUMIDITY__/${min_temperature}/g"   $workspace/www/index.html
-sed -i "s/__TODAY_TEMPERATURE__/${avg_temperature}/g"   $workspace/www/index.html
+sed -i "s/__All_TIME_TEMPERATURE__/${all_time_temp}/g"   $workspace/www/index.html
+sed -i "s/__All_TIME_HUMIDITY__/${all_time_humidity}/g"   $workspace/www/index.html
+sed -i "s/__TODAY_TEMPERATURE__/${today_temp}/g"   $workspace/www/index.html
+sed -i "s/__TODAY_HUMIDITY__/${today_humidity}/g"       $workspace/www/index.html
 sed -i "s/__IMAGE_1__/${image_1}/g"                   $workspace/www/index.html
 sed -i "s/__IMAGE_2__/${image_2}/g"                   $workspace/www/index.html
 sed -i "s/__HOSTNAME__/${hostname}/g"                 $workspace/www/index.html
