@@ -15,7 +15,10 @@ now=$(date)
 
 data=$(sqlite3 db/measurements.db "select timestamp, temperature, humidity from measurements order by timestamp desc limit 1")
 max_temperature=$(sqlite3 db/measurements.db "select max(temperature) from measurements")
+min_temperature=$(sqlite3 db/measurements.db "select min(temperature) from measurements")
+
 max_humidity=$(sqlite3 db/measurements.db "select max(humidity) from measurements")
+min_humidity=$(sqlite3 db/measurements.db "select min(humidity) from measurements")
 
 IFS='|' read -r -a array <<< "$data"
 
@@ -33,16 +36,18 @@ rm -rf $workspace/www
 mkdir -p $workspace/www
 cp $workspace/template.html $workspace/www/index.html
 
-sed -i "s/__NOW__/${now}/g"  $workspace/www/index.html
-sed -i "s/__TIMESTAMP__/${timestamp}/g"  $workspace/www/index.html
-sed -i "s/__TIMESTAMP__/${timestamp}/g"  $workspace/www/index.html
-sed -i "s/__TEMPERATURE__/${temperature}/g"  $workspace/www/index.html
-sed -i "s/__HUMIDITY__/${humidity}/g"  $workspace/www/index.html
-sed -i "s/__MAX_HUMIDITY__/${max_humidity}/g"  $workspace/www/index.html
-sed -i "s/__MAX_TEMPERATURE__/${max_temperature}/g"  $workspace/www/index.html
-sed -i "s/__IMAGE_1__/${image_1}/g" $workspace/www/index.html
-sed -i "s/__IMAGE_2__/${image_2}/g" $workspace/www/index.html
-sed -i "s/__HOSTNAME__/${hostname}/g" $workspace/www/index.html
+sed -i "s/__NOW__/${now}/g"                           $workspace/www/index.html
+sed -i "s/__TIMESTAMP__/${timestamp}/g"               $workspace/www/index.html
+sed -i "s/__TIMESTAMP__/${timestamp}/g"               $workspace/www/index.html
+sed -i "s/__TEMPERATURE__/${temperature}/g"           $workspace/www/index.html
+sed -i "s/__HUMIDITY__/${humidity}/g"                 $workspace/www/index.html
+sed -i "s/__MAX_HUMIDITY__/${max_humidity}/g"         $workspace/www/index.html
+sed -i "s/__MIN_HUMIDITY__/${min_humidity}/g"         $workspace/www/index.html
+sed -i "s/__MAX_TEMPERATURE__/${max_temperature}/g"   $workspace/www/index.html
+sed -i "s/__MIN_TEMPERATURE__/${min_temperature}/g"   $workspace/www/index.html
+sed -i "s/__IMAGE_1__/${image_1}/g"                   $workspace/www/index.html
+sed -i "s/__IMAGE_2__/${image_2}/g"                   $workspace/www/index.html
+sed -i "s/__HOSTNAME__/${hostname}/g"                 $workspace/www/index.html
 
 /home/pi/temperature-sensor/venv/bin/python $workspace/analyze.py $database $workspace/www/$image_1 $workspace/www/$image_2
 
