@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sqlite3
 
+def plot_data(data, figname):
+
+
 def main(database, figname):
 
   conn = sqlite3.connect(database)
@@ -10,6 +13,10 @@ def main(database, figname):
   query = "SELECT timestamp, temperature, humidity FROM measurements"
   data = pd.read_sql_query(query, conn)
 
+  data['timestamp'] = pd.to_datetime(data['timestamp'])
+  data.set_index('timestamp', inplace=True)
+
+  print(data)
 
   plt.figure()
   plt.gcf().autofmt_xdate()
@@ -17,12 +24,12 @@ def main(database, figname):
   fig, ax1 = plt.subplots()
   fig.autofmt_xdate(rotation=45)
   ax1.set_ylabel("Temperature (°C)", color='r')
-  ax1.plot(data["timestamp"], data["temperature"], label="Temperature (°C)", color='r')
+  ax1.plot(data.index, data["temperature"], label="Temperature (°C)", color='r')
   # ax1.legend()
 
   ax2 = ax1.twinx()
   ax2.set_ylabel("Humidity (%)", color='b')
-  ax2.plot(data['timestamp'], data['humidity'], label='Humidity (%)', color='b')
+  ax2.plot(data.index, data['humidity'], label='Humidity (%)', color='b')
   # ax2.legend()
 
   plt.title("Temperature and Humidity")
