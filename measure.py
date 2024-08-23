@@ -8,14 +8,12 @@ import sqlite3
 
 sensor = adafruit_dht.DHT22(board.D2)
 
-n_seconds = 5
+n_seconds = 2 * 60
 
 def read_values():
         try:
             temperature = sensor.temperature
             humidity = sensor.humidity
-
-            print(temperature, humidity)
 
             database = "/home/pi/temperature-sensor/db/measurements.db"
             conn = sqlite3.connect(database)

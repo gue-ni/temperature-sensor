@@ -26,8 +26,8 @@ hostname=$(hostname)
 
 
 #uuid=$(cat /proc/sys/kernel/random/uuid)
-image_1=img-$(cat /proc/sys/kernel/random/uuid).png
-image_2=img-$(cat /proc/sys/kernel/random/uuid).png
+image_1=$(cat /proc/sys/kernel/random/uuid).png
+image_2=$(cat /proc/sys/kernel/random/uuid).png
 
 rm -rf $workspace/www
 mkdir -p $workspace/www
@@ -44,8 +44,7 @@ sed -i "s/__IMAGE_1__/${image_1}/g" $workspace/www/index.html
 sed -i "s/__IMAGE_2__/${image_2}/g" $workspace/www/index.html
 sed -i "s/__HOSTNAME__/${hostname}/g" $workspace/www/index.html
 
-/home/pi/temperature-sensor/venv/bin/python $workspace/analyze.py $database $workspace/www/$image_1
-#/home/pi/temperature-sensor/venv/bin/python $workspace/analyze.py $log_dir/* $workspace/www/$image_2
+/home/pi/temperature-sensor/venv/bin/python $workspace/analyze.py $database $workspace/www/$image_1 $workspace/www/$image_2
 
 server=root@jakobmaier.at
 webroot=/var/www/project/temperature-sensor-1
