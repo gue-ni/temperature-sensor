@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="60">
-  <title>Temperature and Humidity</title>
+  <meta http-equiv="refresh" content="30">
+  <title>Temperature and Humidity 🌡️</title>
   <style>
     :root {
       --font-color: #262626;
@@ -43,29 +43,29 @@
 
 <body>
   <div>
-    <h1>Temperature and Humidity</h1>
+    <h1>Temperature and Humidity 🌡️</h1>
     <p>
-      Temperature: <b>__TEMPERATURE__°C</b>, Humidity: <b>__HUMIDITY__%</b>, measured at <b>__TIMESTAMP__</b>
+      Current temperature: <b>__TEMPERATURE__°C</b>, humidity: <b>__HUMIDITY__%</b>, measured at <b id="measure_time">__TIMESTAMP__</b>
     </p>
     <p>
-      Last update from <i>__HOSTNAME__</i> at __NOW__.
+      Last update from <i>__HOSTNAME__</i> at <span id="update_time">__NOW__</span>.
     </p>
-    <h2>Records:</h2>
+    <h2>Records 🥵</h2>
     <p>
-      Max Temperature: __MAX_TEMPERATURE__, Max Humidity: __MAX_HUMIDITY__
+      Max temperature: __MAX_TEMPERATURE__ °C, humidity: __MAX_HUMIDITY__%
     </p>
     <p>
-      Min Temperature: __MIN_TEMPERATURE__, Min Humidity: __MIN_HUMIDITY__
+      Min temperature: __MIN_TEMPERATURE__ °C, humidity: __MIN_HUMIDITY__
     </p>
     <div>
-      <h2>Last 24 Hours:</h2>
+      <h2>Last 24 Hours ⌛</h2>
       <p>
         Average Temperature: __AVG_TEMPERATURE__
       </p>
       <img src="./__IMAGE_1__" alt="">
     </div>
     <div>
-      <h2>All Time:</h2>
+      <h2>All Time 📈</h2>
       <img src="./__IMAGE_2__" alt="">
     </div>
   </div>

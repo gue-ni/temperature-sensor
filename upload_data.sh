@@ -11,7 +11,7 @@ tmp_file=/tmp/temperature.txt
 database=$workspace/db/measurements.db
 now=$(date)
 
-data=$(sqlite3 $database "select timestamp, temperature, humidity from measurements order by timestamp desc limit 1")
+data=$(sqlite3 $database "select datetime(timestamp, 'localtime'), temperature, humidity from measurements order by timestamp desc limit 1")
 
 max_temperature=$(sqlite3 $database "select max(temperature) from measurements")
 min_temperature=$(sqlite3 $database "select min(temperature) from measurements")
