@@ -42,6 +42,6 @@ sed -i "s/__HOSTNAME__/${hostname}/g" $workspace/www/index.html
 /home/pi/temperature-sensor/venv/bin/python $workspace/analyze.py $log_dir/* $workspace/www/$image_2
 
 server=root@jakobmaier.at
-webroot=/var/www/project/temperature-sensor
+webroot=/var/www/project/temperature-sensor-1
 
 rsync --archive --verbose --delete $workspace/www/ $server:$webroot

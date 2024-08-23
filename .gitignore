@@ -1,4 +1,5 @@
 venv/
 www/
 log/
+db/
 *.png
