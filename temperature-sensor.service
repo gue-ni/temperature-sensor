@@ -7,7 +7,7 @@ User=pi
 Type=simple
 Restart=always
 WorkingDirectory=/home/pi/temperature-sensor
-ExecStart=/home/pi/temperature-sensor/venv/bin/python /home/pi/temperature-sensor/temperature.py
+ExecStart=/home/pi/temperature-sensor/venv/bin/python /home/pi/temperature-sensor/measure.py
 
 [Install]
 WantedBy=multi-user.target

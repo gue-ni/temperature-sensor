@@ -3,6 +3,8 @@
 If pin 4 does not work, maybe try pin 2.
 
 ```
+sqlite3 db/measurements.db "$(cat schema.sql)"
+
 python -m venv venv
 source venv/bin/activate
 
