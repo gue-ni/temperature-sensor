@@ -11,9 +11,8 @@ tmp_file=/tmp/temperature.txt
 database=$workspace/db/measurements.db
 now=$(date)
 
-#data=$(tail -n 1 $log_file)
-
 data=$(sqlite3 db/measurements.db "select timestamp, temperature, humidity from measurements order by timestamp desc limit 1")
+
 max_temperature=$(sqlite3 db/measurements.db "select max(temperature) from measurements")
 min_temperature=$(sqlite3 db/measurements.db "select min(temperature) from measurements")
 
@@ -27,8 +26,6 @@ temperature=${array[1]}
 humidity=${array[2]}
 hostname=$(hostname)
 
-
-#uuid=$(cat /proc/sys/kernel/random/uuid)
 image_1=$(cat /proc/sys/kernel/random/uuid).png
 image_2=$(cat /proc/sys/kernel/random/uuid).png
 
@@ -52,6 +49,6 @@ sed -i "s/__HOSTNAME__/${hostname}/g"                 $workspace/www/index.html
 /home/pi/temperature-sensor/venv/bin/python $workspace/analyze.py $database $workspace/www/$image_1 $workspace/www/$image_2
 
 server=root@jakobmaier.at
-webroot=/var/www/project/temperature-sensor-1
+webroot=/var/www/project/temperature-sensor
 
 rsync --archive --verbose --delete $workspace/www/ $server:$webroot
