@@ -19,6 +19,7 @@ all_time_humidity=$(sqlite3 $database 'select printf("Avg=%.2f%%, Min=%.2f%%, Ma
 today_temp=$(sqlite3 $database "SELECT printf(\"Avg=%.2f°C, Min=%.2f°C, Max=%.2f°C\", AVG(temperature), MIN(temperature), MAX(temperature)) FROM measurements WHERE timestamp >= datetime('now', '-1 day')")
 today_humidity=$(sqlite3 $database "SELECT printf(\"Avg=%.2f%%, Min=%.2f%%, Max=%.2f%%\", AVG(humidity), MIN(humidity), MAX(humidity)) FROM measurements WHERE timestamp >= datetime('now', '-1 day')")
 
+sqlite3 -json $database "SELECT temperature as x, timestamp as y FROM measurements" > $workspace/www/data.json
 
 IFS='|' read -r -a array <<< "$data"
 
