@@ -39,27 +39,23 @@
       max-width: 100%;
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
 </head>
 
 <body>
   <div>
     <h1>Temperature and Humidity 🌡️</h1>
     <p>
-      Current temperature: <b id="current_temp">__TEMPERATURE__°C</b>, humidity: <b id="current_humidity">__HUMIDITY__%</b>, measured at <b
-        id="measure_time">__TIMESTAMP__</b>
+      Current temperature: <b id="current_temp">__TEMPERATURE__°C</b>, humidity: <b
+        id="current_humidity">__HUMIDITY__%</b>, measured at <b id="measure_time">__TIMESTAMP__</b>
     </p>
     <p>
       Last update from <i>__HOSTNAME__</i> at <span id="update_time">__NOW__</span>.
     </p>
-    <!--
-    <h2>Records 🥵</h2>
-    <p>
-      Temperature: __All_TIME_TEMPERATURE__
-    </p>
-    <p>
-      Humidity: __All_TIME_HUMIDITY__
-    </p>
-    -->
+
     <div>
       <h2>Last 24 Hours ⌛</h2>
       <p>
@@ -68,7 +64,13 @@
       <p>
         Humidity: __TODAY_HUMIDITY__
       </p>
+      <!--
       <img src="./__IMAGE_1__" alt="">
+      -->
+      <div>
+        <canvas id="chart_1"></canvas>
+      </div>
+
     </div>
     <div>
       <h2>All Time 📈</h2>
@@ -78,9 +80,112 @@
       <p>
         Humidity: __All_TIME_HUMIDITY__
       </p>
+      <!--
       <img src="./__IMAGE_2__" alt="">
+      -->
+      <div>
+        <canvas id="chart_2"></canvas>
+      </div>
     </div>
   </div>
 </body>
+<script>
+  function visualize(data, options, id) {
+    const timestamps = data.map(({ timestamp, temperature }) => timestamp);
+    const temperature = data.map(({ timestamp, temperature }) => temperature);
+    const humidity = data.map(({ timestamp, temperature, humidity }) => humidity);
+
+    new Chart(id, {
+      type: 'line',
+      data: {
+        labels: timestamps,
+        datasets: [{
+          label: 'Temperature °C',
+          data: temperature,
+          borderWidth: 1
+        }
+        ]
+      },
+      options: options
+    });
+  }
+
+  function downsample(data, interval) {
+    return data.filter((_, index) => index % interval === 0);
+  }
+
+
+  function downsampleByTime(data, minIntervalMinutes) {
+    const downsampledData = [];
+    let lastTimestamp = null;
+
+    data.forEach((point) => {
+      const currentTimestamp = new Date(point.timestamp).getTime();
+
+      if (!lastTimestamp || (currentTimestamp - lastTimestamp) >= minIntervalMinutes * 60 * 1000) {
+        downsampledData.push(point);
+        lastTimestamp = currentTimestamp;
+      }
+    });
+
+    return downsampledData;
+  }
+
+  fetch("./last_24h.json")
+    .then(response => response.json())
+    .then(data => {
+      const options = {
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'hour',
+              tooltipFormat: 'yyyy-mm-dd hh:mm:ss',
+              displayFormats: {
+                hour: 'HH:mm'
+              }
+            },
+          },
+          y: {
+            beginAtZero: false
+          }
+        }
+      };
+
+      data = downsampleByTime(data, 10)
+      visualize(data, options, "chart_1");
+    })
+    .catch(error => console.error('Error fetching data:', error));
+
+
+  fetch("./all_time.json")
+    .then(response => response.json())
+    .then(data => {
+      const options = {
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'day',
+              tooltipFormat: 'yyyy-mm-dd hh:mm:ss',
+              displayFormats: {
+                day: 'MMM dd, yyyy'
+              }
+            },
+          },
+          y: {
+            beginAtZero: false
+          }
+        }
+      };
+
+      data = downsampleByTime(data, 120);
+
+      visualize(data, options, "chart_2");
+    })
+    .catch(error => console.error('Error fetching data:', error));
+
+
+</script>
 
 </html>

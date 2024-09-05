@@ -8,7 +8,7 @@ import sqlite3
 
 sensor = adafruit_dht.DHT22(board.D2)
 
-n_seconds = 2 * 60
+n_seconds = 10 * 60
 
 def read_values():
         try:
