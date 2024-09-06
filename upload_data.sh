@@ -36,8 +36,9 @@ hostname=$(hostname)
 image_1=$(cat /proc/sys/kernel/random/uuid).png
 image_2=$(cat /proc/sys/kernel/random/uuid).png
 
-mkdir -p $workspace/www
-cp $workspace/template.html $workspace/www/index.html
+mkdir -p $workspace/www $workspace/www/favicon
+cp $workspace/web/favicon/* $workspace/www/favicon
+cp $workspace/web/page.html $workspace/www/index.html
 
 sed -i "s/__NOW__/${now}/g"                               $workspace/www/index.html
 sed -i "s/__TIMESTAMP__/${timestamp}/g"                   $workspace/www/index.html
