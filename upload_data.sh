@@ -14,7 +14,7 @@ now=$(date)
 rm -rf $workspace/www/*
 
 sqlite3 -json $database "SELECT timestamp, temperature, humidity FROM measurements WHERE timestamp >= datetime('now', '-1 day')" > $workspace/www/last_24h.json
-sqlite3 -json $database "SELECT timestamp, temperature, humidity FROM measurements WHERE timestamp >= datetime('now', '-7 day')" > $workspace/www/last_7d.json
+# sqlite3 -json $database "SELECT timestamp, temperature, humidity FROM measurements WHERE timestamp >= datetime('now', '-7 day')" > $workspace/www/last_7d.json
 sqlite3 -json $database "SELECT timestamp, temperature, humidity FROM measurements" > $workspace/www/all_time.json
 
 data=$(sqlite3 $database "select datetime(timestamp, 'localtime'), temperature, humidity from measurements order by timestamp desc limit 1")
