@@ -80,6 +80,19 @@
 
     </div>
     <div>
+      <h2>Last 7 Days</h2>
+      <p>
+        Temperature: __LAST_7_DAYS_TEMPERATURE__
+      </p>
+      <p>
+        Humidity: __LAST_7_DAYS_HUMIDITY__
+      </p>
+      <div>
+        <canvas id="chart_3"></canvas>
+      </div>
+
+    </div>    
+    <div>
       <h2>All Time 📈</h2>
       <p>
         Temperature: __All_TIME_TEMPERATURE__
@@ -216,8 +229,40 @@
       };
 
       data = downsampleByTime(data, 120);
-
       visualize(data, options, "chart_2");
+    })
+    .catch(error => console.error('Error fetching data:', error));
+
+  fetch("./last_7d.json")
+    .then(response => response.json())
+    .then(data => {
+      const options = {
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'day',
+              tooltipFormat: 'yyyy-MM-dd HH:mm:ss',
+              displayFormats: {
+                day: 'MMM dd, yyyy'
+              }
+            },
+          },
+          y_axis_1: {
+            label: 'Temperature',
+            position: "left",
+            beginAtZero: false
+          },
+          y_axis_2: {
+            label: 'Humidity',
+            position: "right",
+            beginAtZero: false
+          }
+        }
+      };
+
+      data = downsampleByTime(data, 60);
+      visualize(data, options, "chart_3");
     })
     .catch(error => console.error('Error fetching data:', error));
 
