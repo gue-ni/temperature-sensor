@@ -9,6 +9,7 @@ log_dir=$workspace/log
 log_file=$log_dir/temperature.$date.log
 tmp_file=/tmp/temperature.txt
 database=$workspace/db/measurements.db
+index=$workspace/www/index.html
 now=$(date)
 
 rm -rf $workspace/www/*
@@ -42,24 +43,19 @@ image_2=$(cat /proc/sys/kernel/random/uuid).png
 
 mkdir -p $workspace/www $workspace/www/favicon
 cp $workspace/web/favicon/* $workspace/www/favicon
-cp $workspace/web/page.html $workspace/www/index.html
+cp $workspace/web/page.html                                           $index
 
-sed -i "s/__NOW__/${now}/g"                               $workspace/www/index.html
-sed -i "s/__TIMESTAMP__/${timestamp}/g"                   $workspace/www/index.html
-sed -i "s/__TIMESTAMP__/${timestamp}/g"                   $workspace/www/index.html
-sed -i "s/__TEMPERATURE__/${temperature}/g"               $workspace/www/index.html
-sed -i "s/__HUMIDITY__/${humidity}/g"                     $workspace/www/index.html
-sed -i "s/__All_TIME_TEMPERATURE__/${all_time_temp}/g"    $workspace/www/index.html
-sed -i "s/__All_TIME_HUMIDITY__/${all_time_humidity}/g"   $workspace/www/index.html
-sed -i "s/__TODAY_TEMPERATURE__/${today_temp}/g"          $workspace/www/index.html
-sed -i "s/__TODAY_HUMIDITY__/${today_humidity}/g"         $workspace/www/index.html
-sed -i "s/__LAST_7_DAYS_TEMPERATURE__/${last_7_days_temp}/g"          $workspace/www/index.html
-sed -i "s/__LAST_7_DAYS_HUMIDITY__/${last_7_days_humidity}/g"         $workspace/www/index.html
-sed -i "s/__IMAGE_1__/${image_1}/g"                       $workspace/www/index.html
-sed -i "s/__IMAGE_2__/${image_2}/g"                       $workspace/www/index.html
-sed -i "s/__HOSTNAME__/${hostname}/g"                     $workspace/www/index.html
-
-# /home/pi/temperature-sensor/venv/bin/python $workspace/analyze.py $database $workspace/www/$image_1 $workspace/www/$image_2
+sed -i "s/__NOW__/${now}/g"                                           $index
+sed -i "s/__TIMESTAMP__/${timestamp}/g"                               $index
+sed -i "s/__TEMPERATURE__/${temperature}/g"                           $index
+sed -i "s/__HUMIDITY__/${humidity}/g"                                 $index
+sed -i "s/__All_TIME_TEMPERATURE__/${all_time_temp}/g"                $index
+sed -i "s/__All_TIME_HUMIDITY__/${all_time_humidity}/g"               $index
+sed -i "s/__TODAY_TEMPERATURE__/${today_temp}/g"                      $index
+sed -i "s/__TODAY_HUMIDITY__/${today_humidity}/g"                     $index
+sed -i "s/__LAST_7_DAYS_TEMPERATURE__/${last_7_days_temp}/g"          $index
+sed -i "s/__LAST_7_DAYS_HUMIDITY__/${last_7_days_humidity}/g"         $index
+sed -i "s/__HOSTNAME__/${hostname}/g"                                 $index
 
 server=root@jakobmaier.at
 webroot=/var/www/project/temperature-sensor
