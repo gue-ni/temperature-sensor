@@ -25,6 +25,10 @@ all_time_humidity=$(sqlite3 $database 'select printf("Avg=%.2f%%, Min=%.2f%%, Ma
 today_temp=$(sqlite3 $database "SELECT printf(\"Avg=%.2f°C, Min=%.2f°C, Max=%.2f°C\", AVG(temperature), MIN(temperature), MAX(temperature)) FROM measurements WHERE timestamp >= datetime('now', '-1 day')")
 today_humidity=$(sqlite3 $database "SELECT printf(\"Avg=%.2f%%, Min=%.2f%%, Max=%.2f%%\", AVG(humidity), MIN(humidity), MAX(humidity)) FROM measurements WHERE timestamp >= datetime('now', '-1 day')")
 
+last_7_days_temp=$(sqlite3 $database "SELECT printf(\"Avg=%.2f°C, Min=%.2f°C, Max=%.2f°C\", AVG(temperature), MIN(temperature), MAX(temperature)) FROM measurements WHERE timestamp >= datetime('now', '-7 day')")
+last_7_days_humidity=$(sqlite3 $database "SELECT printf(\"Avg=%.2f%%, Min=%.2f%%, Max=%.2f%%\", AVG(humidity), MIN(humidity), MAX(humidity)) FROM measurements WHERE timestamp >= datetime('now', '-7 day')")
+
+
 
 IFS='|' read -r -a array <<< "$data"
 
@@ -49,6 +53,8 @@ sed -i "s/__All_TIME_TEMPERATURE__/${all_time_temp}/g"    $workspace/www/index.h
 sed -i "s/__All_TIME_HUMIDITY__/${all_time_humidity}/g"   $workspace/www/index.html
 sed -i "s/__TODAY_TEMPERATURE__/${today_temp}/g"          $workspace/www/index.html
 sed -i "s/__TODAY_HUMIDITY__/${today_humidity}/g"         $workspace/www/index.html
+sed -i "s/__LAST_7_DAYS_TEMPERATURE__/${last_7_days_temp}/g"          $workspace/www/index.html
+sed -i "s/__LAST_7_DAYS_HUMIDITY__/${last_7_days_humidity}/g"         $workspace/www/index.html
 sed -i "s/__IMAGE_1__/${image_1}/g"                       $workspace/www/index.html
 sed -i "s/__IMAGE_2__/${image_2}/g"                       $workspace/www/index.html
 sed -i "s/__HOSTNAME__/${hostname}/g"                     $workspace/www/index.html
