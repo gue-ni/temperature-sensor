@@ -14,9 +14,12 @@ now=$(date)
 
 rm -rf $workspace/www/*
 
-sqlite3 -json $database "SELECT timestamp, temperature, humidity FROM measurements WHERE timestamp >= datetime('now', '-1 day')" > $workspace/www/last_24h.json
-sqlite3 -json $database "SELECT timestamp, temperature, humidity FROM measurements WHERE timestamp >= datetime('now', '-7 day')" > $workspace/www/last_7d.json
-sqlite3 -json $database "WITH CTE AS (SELECT timestamp, temperature, humidity LAG(timestamp) OVER (ORDER BY timestamp) AS prev_timestamp FROM measurements) SELECT timestamp, temperature, humidity FROM CTE WHERE prev_timestamp IS NULL OR (strftime('%s', timestamp) - strftime('%s', prev_timestamp)) / 60 >= M" > $workspace/www/all_time.json
+sqlite3 -json $database "SELECT datetime(timestamp, 'localtime') as hour, temperature, humidity FROM measurements WHERE timestamp >= datetime('now', '-1 day')" > $workspace/www/last_24h.json
+sqlite3 -json $database "SELECT datetime(timestamp, 'localtime') as hour, temperature, humidity FROM measurements WHERE timestamp >= datetime('now', '-7 day')" > $workspace/www/last_7d.json
+#sqlite3 -json $database "SELECT timestamp, temperature, humidity FROM measurements" > $workspace/www/all_time.json
+#sqlite3 -json $database "with cte as (select timestamp, temperature, humidity, lag(timestamp) over (order by timestamp) as prev_timestamp from measurements) select * from cte where prev_timestamp is null or ((strftime('%s', timestamp) - strftime('%s', prev_timestamp)) / 60 >= 60);" > $workspace/www/all_time.json
+
+sqlite3 -json $database "select STRFTIME('%Y-%m-%d %H:00:00', timestamp) AS hour, AVG(m.temperature) as temperature, AVG(m.humidity) as humidity from measurements m group by hour order by hour" > $workspace/www/all_time.json
 
 data=$(sqlite3 $database "select datetime(timestamp, 'localtime'), temperature, humidity from measurements order by timestamp desc limit 1")
 
@@ -37,9 +40,6 @@ timestamp=${array[0]}
 temperature=${array[1]}
 humidity=${array[2]}
 hostname=$(hostname)
-
-image_1=$(cat /proc/sys/kernel/random/uuid).png
-image_2=$(cat /proc/sys/kernel/random/uuid).png
 
 mkdir -p $workspace/www $workspace/www/favicon
 cp $workspace/web/favicon/* $workspace/www/favicon

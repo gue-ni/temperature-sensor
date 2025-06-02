@@ -108,9 +108,9 @@
 </body>
 <script>
   function visualize(data, options, id) {
-    const timestamps = data.map(({ timestamp, temperature }) => timestamp);
-    const temperature = data.map(({ timestamp, temperature }) => temperature);
-    const humidity = data.map(({ timestamp, temperature, humidity }) => humidity);
+    const timestamps = data.map(({ hour, temperature }) => hour);
+    const temperature = data.map(({ hour, temperature }) => temperature);
+    const humidity = data.map(({ hour, temperature, humidity }) => humidity);
 
     new Chart(id, {
       type: 'line',
@@ -147,7 +147,7 @@
     let lastTimestamp = null;
 
     data.forEach((point) => {
-      const currentTimestamp = new Date(point.timestamp).getTime();
+      const currentTimestamp = new Date(point.hour).getTime();
 
       if (!lastTimestamp || (currentTimestamp - lastTimestamp) >= minIntervalMinutes * 60 * 1000) {
         downsampledData.push(point);
@@ -189,7 +189,6 @@
       visualize(data, options, "chart_1");
     })
     .catch(error => console.error('Error fetching data:', error));
-
 
   fetch("./all_time.json")
     .then(response => response.json())
